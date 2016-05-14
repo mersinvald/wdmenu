@@ -1,15 +1,15 @@
-# dmenu - dynamic menu
+# wdmenu - dynamic menu
 # See LICENSE file for copyright and license details.
 
 include config.mk
 
-SRC = dmenu.c draw.c lsx.c
+SRC = wdmenu.c draw.c lsx.c
 OBJ = ${SRC:.c=.o}
 
-all: options dmenu lsx
+all: options wdmenu lsx
 
 options:
-	@echo dmenu build options:
+	@echo wdmenu build options:
 	@echo "CFLAGS   = ${CFLAGS}"
 	@echo "LDFLAGS  = ${LDFLAGS}"
 	@echo "CC       = ${CC}"
@@ -20,7 +20,7 @@ options:
 
 ${OBJ}: config.mk
 
-dmenu: dmenu.o draw.o
+wdmenu: dmenu.o draw.o
 	@echo CC -o $@
 	@${CC} -o $@ dmenu.o draw.o ${LDFLAGS}
 
@@ -30,37 +30,28 @@ lsx: lsx.o
 
 clean:
 	@echo cleaning
-	@rm -f dmenu lsx ${OBJ} dmenu-${VERSION}.tar.gz
+	@rm -f wdmenu lsx ${OBJ} wdmenu-${VERSION}.tar.gz
 
 dist: clean
 	@echo creating dist tarball
-	@mkdir -p dmenu-${VERSION}
-	@cp LICENSE Makefile README config.mk dmenu.1 draw.h dmenu_run lsx.1 ${SRC} dmenu-${VERSION}
-	@tar -cf dmenu-${VERSION}.tar dmenu-${VERSION}
-	@gzip dmenu-${VERSION}.tar
-	@rm -rf dmenu-${VERSION}
+	@mkdir -p wdmenu-${VERSION}
+	@cp LICENSE Makefile README config.mk wdmenu.1 draw.h wdmenu_run lsx.1 ${SRC} wdmenu-${VERSION}
+	@tar -cf wdmenu-${VERSION}.tar wdmenu-${VERSION}
+	@gzip wdmenu-${VERSION}.tar
+	@rm -rf wdmenu-${VERSION}
 
 install: all
 	@echo installing executables to ${DESTDIR}${PREFIX}/bin
 	@mkdir -p ${DESTDIR}${PREFIX}/bin
-	@cp -f dmenu dmenu_run lsx ${DESTDIR}${PREFIX}/bin
-	@chmod 755 ${DESTDIR}${PREFIX}/bin/dmenu
-	@chmod 755 ${DESTDIR}${PREFIX}/bin/dmenu_run
+	@cp -f wdmenu wdmenu_run lsx ${DESTDIR}${PREFIX}/bin
+	@chmod 755 ${DESTDIR}${PREFIX}/bin/wdmenu
+	@chmod 755 ${DESTDIR}${PREFIX}/bin/wdmenu_run
 	@chmod 755 ${DESTDIR}${PREFIX}/bin/lsx
-	@echo installing manual pages to ${DESTDIR}${MANPREFIX}/man1
-	@mkdir -p ${DESTDIR}${MANPREFIX}/man1
-	@sed "s/VERSION/${VERSION}/g" < dmenu.1 > ${DESTDIR}${MANPREFIX}/man1/dmenu.1
-	@sed "s/VERSION/${VERSION}/g" < lsx.1 > ${DESTDIR}${MANPREFIX}/man1/lsx.1
-	@chmod 644 ${DESTDIR}${MANPREFIX}/man1/dmenu.1
-	@chmod 644 ${DESTDIR}${MANPREFIX}/man1/lsx.1
 
 uninstall:
 	@echo removing executables from ${DESTDIR}${PREFIX}/bin
-	@rm -f ${DESTDIR}${PREFIX}/bin/dmenu
-	@rm -f ${DESTDIR}${PREFIX}/bin/dmenu_run
+	@rm -f ${DESTDIR}${PREFIX}/bin/wdmenu
+	@rm -f ${DESTDIR}${PREFIX}/bin/wdmenu_run
 	@rm -f ${DESTDIR}${PREFIX}/bin/lsx
-	@echo removing manual page from ${DESTDIR}${MANPREFIX}/man1
-	@rm -f ${DESTDIR}${MANPREFIX}/man1/dmenu.1
-	@rm -f ${DESTDIR}${MANPREFIX}/man1/lsx.1
 
 .PHONY: all options clean dist install uninstall
